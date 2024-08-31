@@ -141,14 +141,14 @@ const DisplayController = (function () {
                 let cellDisplay = document.createElement("button")
                 cellDisplay.classList.add("cell")
                 cellDisplay.addEventListener("click", GameController.dropToken.bind(null,i, j))
+                cellDisplay.addEventListener("click", () => {
+                    cellDisplay.textContent = Gameboard.board[i][j].getValue()
+                })
                 rowDisplay.append(cellDisplay)
             }
         }
     }
     createBoardDisplay()
-
-    const cellNodeList = document.querySelectorAll(".cell")
-
 
 })()
 
