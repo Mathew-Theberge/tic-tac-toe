@@ -65,15 +65,12 @@ const GameController = (function () {
         }
     }
 
-    const dropToken = (player) => {
-        let userInputRow = prompt("pick row 1-3")
-        let userInputColumn = prompt("pick column 1-3")
-        if (board[userInputRow][userInputColumn].getValue() === 0) {
-            board[userInputRow][userInputColumn].addToken(player.token)
+    const dropToken = (row , column) => {
+        if (board[row][column].getValue() === 0) {
+            board[row][column].addToken(activePlayer.token)
             if (!isGameWon()) {
                 switchPlayerTurn()
                 Gameboard.printBoard()
-                dropToken(activePlayer)
             } else {
                 console.log(`${activePlayer.name} won`)
                 Gameboard.printBoard()
@@ -143,15 +140,17 @@ const DisplayController = (function () {
             for (let j = 0; j < Gameboard.board.length; j++) {
                 let cellDisplay = document.createElement("button")
                 cellDisplay.classList.add("cell")
+                cellDisplay.addEventListener("click", GameController.dropToken.bind(null,i, j))
                 rowDisplay.append(cellDisplay)
             }
         }
     }
+    createBoardDisplay()
 
-    return {createBoardDisplay}
+    const cellNodeList = document.querySelectorAll(".cell")
+
 
 })()
 
-DisplayController.createBoardDisplay()
 // GameController.dropToken(GameController.activePlayer)
 
