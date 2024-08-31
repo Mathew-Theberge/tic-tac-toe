@@ -82,9 +82,77 @@ const GameController = (function () {
     }
 
     const isGameWon = () => {
+
+        // function checkRow(array) {
+        //     if (array.some( (row) => {
+        //         if (row.every( (cell) => {
+        //             return cell.getValue() === "X" || cell.getValue() === "O"
+        //         })) {
+        //             return true
+        //         }
+        //     })) {
+        //         return true
+        //     }
+        // }
+
+        // checks all rows for 3 of the same token
         if (board.some( (row) => {
             if (row.every( (cell) => {
-                return cell.getValue() === "X" || cell.getValue() === "O"
+                return cell.getValue() === "X"
+            })) {
+                return true
+            } else if (row.every( (cell) => {
+                return cell.getValue() === "O"
+            })) {
+                return true
+            }
+        })) {
+            return true
+        }
+
+        // check all columns for 3 of the same token
+        const columns = []
+
+        for (let i = 0; i < board.length; i++) {
+            columns[i] = []
+            for (let j = 0; j < board.length; j++) {
+                columns[i].push(board[j][i])
+            }
+        }
+        // the loop above is there to move board column cells into 1 array
+        // instead of being 3 cells across 3 different arrays
+        // this allows are previous if statment to work on columns aswell
+
+        if (columns.some( (row) => {
+            if (row.every( (cell) => {
+                return cell.getValue() === "X"
+            })) {
+                return true
+            } else if (row.every( (cell) => {
+                return cell.getValue() === "O"
+            })) {
+                return true
+            }
+        })) {
+            return true
+        }
+
+        // check for all diagonal winning positions
+        const diagonal = [[],[]]
+
+        for (let i = 0; i < board.length; i++) {
+            diagonal[0].push(board[i][i])
+        }
+
+        diagonal[1].push(board[2][0], board[1][1], board[0][2])
+
+        if (diagonal.some( (row) => {
+            if (row.every( (cell) => {
+                return cell.getValue() === "X"
+            })) {
+                return true
+            } else if (row.every( (cell) => {
+                return cell.getValue() === "O"
             })) {
                 return true
             }
