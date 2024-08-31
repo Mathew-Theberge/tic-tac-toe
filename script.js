@@ -83,32 +83,24 @@ const GameController = (function () {
 
     const isGameWon = () => {
 
-        // function checkRow(array) {
-        //     if (array.some( (row) => {
-        //         if (row.every( (cell) => {
-        //             return cell.getValue() === "X" || cell.getValue() === "O"
-        //         })) {
-        //             return true
-        //         }
-        //     })) {
-        //         return true
-        //     }
-        // }
-
-        // checks all rows for 3 of the same token
-        if (board.some( (row) => {
-            if (row.every( (cell) => {
-                return cell.getValue() === "X"
-            })) {
-                return true
-            } else if (row.every( (cell) => {
-                return cell.getValue() === "O"
+        function checkRow(array) {
+            if (array.some( (row) => {
+                if (row.every( (cell) => {
+                    return cell.getValue() === "X"
+                })) {
+                    return true
+                } else if (row.every( (cell) => {
+                    return cell.getValue() === "O"
+                })) {
+                    return true
+                }
             })) {
                 return true
             }
-        })) {
-            return true
         }
+
+        // checks all rows for 3 of the same token
+        if(checkRow(board)) {return true}
 
         // check all columns for 3 of the same token
         const columns = []
@@ -123,19 +115,7 @@ const GameController = (function () {
         // instead of being 3 cells across 3 different arrays
         // this allows are previous if statment to work on columns aswell
 
-        if (columns.some( (row) => {
-            if (row.every( (cell) => {
-                return cell.getValue() === "X"
-            })) {
-                return true
-            } else if (row.every( (cell) => {
-                return cell.getValue() === "O"
-            })) {
-                return true
-            }
-        })) {
-            return true
-        }
+        if(checkRow(columns)) {return true}
 
         // check for all diagonal winning positions
         const diagonal = [[],[]]
@@ -146,19 +126,7 @@ const GameController = (function () {
 
         diagonal[1].push(board[2][0], board[1][1], board[0][2])
 
-        if (diagonal.some( (row) => {
-            if (row.every( (cell) => {
-                return cell.getValue() === "X"
-            })) {
-                return true
-            } else if (row.every( (cell) => {
-                return cell.getValue() === "O"
-            })) {
-                return true
-            }
-        })) {
-            return true
-        }
+        if(checkRow(diagonal)) {return true}
     }
 
     return {switchPlayerTurn, dropToken, activePlayer}
