@@ -102,7 +102,7 @@ const GameController = (function () {
         // checks all rows for 3 of the same token
         if(checkRow(board)) {return true}
 
-        // check all columns for 3 of the same token
+        // convert columns into rows so their compatable with checkrow function
         const columns = []
 
         for (let i = 0; i < board.length; i++) {
@@ -111,19 +111,17 @@ const GameController = (function () {
                 columns[i].push(board[j][i])
             }
         }
-        // the loop above is there to move board column cells into 1 array
-        // instead of being 3 cells across 3 different arrays
-        // this allows are previous if statment to work on columns aswell
 
         if(checkRow(columns)) {return true}
 
-        // check for all diagonal winning positions
+        //  convert diagonal cells into arrays inside a main array
+        // to create rows that can be looped through using checkrow function
+
         const diagonal = [[],[]]
 
         for (let i = 0; i < board.length; i++) {
             diagonal[0].push(board[i][i])
         }
-
         diagonal[1].push(board[2][0], board[1][1], board[0][2])
 
         if(checkRow(diagonal)) {return true}
@@ -132,7 +130,28 @@ const GameController = (function () {
     return {switchPlayerTurn, dropToken, activePlayer}
 })()
 
-console.log(Gameboard.board)
-Gameboard.printBoard()
-GameController.dropToken(GameController.activePlayer)
+const DisplayController = (function () {
+
+    const boardDisplay = document.querySelector(".board")
+
+    const createBoardDisplay = () => {
+        for (let i = 0; i < Gameboard.board.length; i++) {
+            let rowDisplay = document.createElement("div")
+            rowDisplay.classList.add("row")
+            boardDisplay.append(rowDisplay)
+            let row = Gameboard.board[i]
+            for (let j = 0; j < Gameboard.board.length; j++) {
+                let cellDisplay = document.createElement("button")
+                cellDisplay.classList.add("cell")
+                rowDisplay.append(cellDisplay)
+            }
+        }
+    }
+
+    return {createBoardDisplay}
+
+})()
+
+DisplayController.createBoardDisplay()
+// GameController.dropToken(GameController.activePlayer)
 
