@@ -171,6 +171,11 @@ const DisplayController = (function () {
     createBoardDisplay()
 
     const outputText = document.querySelector(".outputText")
+    const resetBtn = document.querySelector(".resetBtn")
+
+    resetBtn.addEventListener("click", () => {
+        location.reload()
+    })
 
     const displayOutput = (message) => {
         outputText.textContent = message
