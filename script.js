@@ -14,6 +14,7 @@ const Gameboard = (function () {
 
     function Cell() {
         let value = 0;
+        let color = null
       
         // Accept a player's token to change the value of the cell
         const addToken = (player) => {
@@ -22,10 +23,18 @@ const Gameboard = (function () {
       
         // How we will retrieve the current value of this cell through closure
         const getValue = () => value;
+
+        const addColor = (playerColor) => {
+            color = playerColor
+        }
+
+        const getColor = () => color
       
         return {
           addToken,
-          getValue
+          getValue,
+          addColor,
+          getColor
         };
       }
 })()
@@ -38,12 +47,14 @@ const GameController = (function () {
     const players = [
         {
             name: playerOne,
-            token: "X"
+            token: "X",
+            color: null
         },
 
         {
             name: playerTwo,
-            token: "O"
+            token: "O",
+            color: null
         }
     ]
     const board = Gameboard.board
@@ -63,11 +74,13 @@ const GameController = (function () {
     const dropToken = (row, column) => {
         if (board[row][column].getValue() === 0) {
             board[row][column].addToken(activePlayer.token)
+            board[row][column].addColor(activePlayer.color)
                 if (!isGameWon()) {
                     if (isGameDrawn()) {
                         DisplayController.displayOutput("DRAW!")
                     } else {
                         switchPlayerTurn()
+
                     }
             } else {
                 DisplayController.displayOutput(`${activePlayer.name} Won!`)
@@ -128,7 +141,7 @@ const GameController = (function () {
         if(checkRow(diagonal)) {return true}
     }
 
-    return {dropToken, isGameWon}
+    return {dropToken, isGameWon, players}
 })()
 
 const DisplayController = (function () {
@@ -148,6 +161,7 @@ const DisplayController = (function () {
                     if (!GameController.isGameWon()) {
                         GameController.dropToken(i, j)
                         cellDisplay.textContent = Gameboard.board[i][j].getValue()
+                        cellDisplay.setAttribute("style", `color :${Gameboard.board[i][j].getColor()}`)
                     }
                 })
                 rowDisplay.append(cellDisplay)
@@ -161,6 +175,29 @@ const DisplayController = (function () {
     const displayOutput = (message) => {
         outputText.textContent = message
     }
+
+    // controls color change of buttons and players
+
+    const player1ColorBtn = document.querySelector("#player1ColorBtn")
+    const player2ColorBtn = document.querySelector("#player2ColorBtn")
+    const player1ColorInput = document.querySelector("#player1ColorInput")
+    const player2ColorInput = document.querySelector("#player2ColorInput")
+    const startBtn = document.querySelector(".startBtn")
+
+    player1ColorInput.addEventListener("change", () => {
+        player1ColorBtn.setAttribute("style", `background: ${player1ColorInput.value}`)
+    })
+
+    player2ColorInput.addEventListener("change", () => {
+        player2ColorBtn.setAttribute("style", `background: ${player2ColorInput.value}`)
+    })
+
+    const setPlayerColor = () => {
+        GameController.players[0].color = player1ColorInput.value
+        GameController.players[1].color = player2ColorInput.value
+    }
+
+    startBtn.addEventListener("click", setPlayerColor)
 
     return {displayOutput}
 })()

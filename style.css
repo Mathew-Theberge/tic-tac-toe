@@ -27,3 +27,35 @@ body {
     display: flex;
     justify-content: space-between;
 }
+
+.colorSelectorContainer {
+    position: relative;
+    height: 40px;
+    width: 80px;
+    border-radius: 8px;
+  }
+  
+.colorInput {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+}
+
+.selectColor {
+    position: relative;
+    height: 40px;
+    width: 80px;
+    border-radius: 8px;
+    border: none;
+}
+
+#player1ColorBtn {
+    background-color: #ff5500;
+}
+
+#player2ColorBtn {
+    background-color: #0055ff;
+}
