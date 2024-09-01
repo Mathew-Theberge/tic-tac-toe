@@ -65,18 +65,28 @@ const GameController = (function () {
         }
     }
 
-    const dropToken = (row , column) => {
+    const dropToken = (row, column) => {
         if (board[row][column].getValue() === 0) {
             board[row][column].addToken(activePlayer.token)
-            if (!isGameWon()) {
-                switchPlayerTurn()
-                Gameboard.printBoard()
+                if (!isGameWon()) {
+                    if (isGameDrawn()) {
+                        DisplayController.displayOutput("DRAW!")
+                    } else {
+                        switchPlayerTurn()
+                        Gameboard.printBoard()
+                    }
             } else {
-                console.log(`${activePlayer.name} won`)
-                Gameboard.printBoard()
+                DisplayController.displayOutput(`${activePlayer.name} Won!`)
             }
         }
     }
+
+    const isGameDrawn = () => {
+        const availableCells = board.map((row) => row.map((cell) => cell.getValue())).flat()
+        if (!availableCells.includes(0)) {return true}
+    }
+
+    isGameDrawn()
 
     const isGameWon = () => {
 
@@ -124,7 +134,7 @@ const GameController = (function () {
         if(checkRow(diagonal)) {return true}
     }
 
-    return {switchPlayerTurn, dropToken, activePlayer}
+    return {switchPlayerTurn, dropToken,}
 })()
 
 const DisplayController = (function () {
@@ -150,6 +160,13 @@ const DisplayController = (function () {
     }
     createBoardDisplay()
 
+    const outputText = document.querySelector(".outputText")
+
+    const displayOutput = (message) => {
+        outputText.textContent = message
+    }
+
+    return {displayOutput}
 })()
 
 // GameController.dropToken(GameController.activePlayer)
