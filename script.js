@@ -209,11 +209,7 @@ const DisplayController = (function () {
         GameController.players[1].color = player2ColorInput.value
     }
 
-    startBtn.addEventListener("click", () => {
-        setPlayerColor()
-    })
-
-    return {displayOutput}
+    return {displayOutput, setPlayerColor}
 })()
 
 
@@ -222,27 +218,29 @@ const formControls = (function () {
     const form = document.querySelector("#form")
     const plauer1Input = document.querySelector("#player1Input")
     const plauer2Input = document.querySelector("#player2Input")
+    const inputList = document.querySelectorAll("input")
 
     form.addEventListener("submit", (e) => {
         e.preventDefault()
         GameController.players[0].name = player1Input.value
         GameController.players[1].name = player2Input.value
+        GameController.isFormSubmitted = true
+        DisplayController.setPlayerColor()
+        inputList.forEach( (input) => {
+            input.setAttribute("disabled", "")
+        })
         if (GameController.players[0].name === "" && GameController.players[1].name === "") {
-            GameController.isFormSubmitted = true
             GameController.players[0].name = "Player One"
             GameController.players[1].name = "Player Two"
         } else if (GameController.players[0].name === "") {
             GameController.players[0].name = "Player One"
             GameController.players[1].name = player2Input.value
-            GameController.isFormSubmitted = true
         } else if (GameController.players[1].name === "") {
             GameController.players[1].name = "Player Two"
             GameController.players[0].name = player1Input.value
-            GameController.isFormSubmitted = true
         } else {
             GameController.players[0].name = player1Input.value
             GameController.players[1].name = player2Input.value
-            GameController.isFormSubmitted = true
         }
     })
 
