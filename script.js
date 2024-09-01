@@ -227,7 +227,23 @@ const formControls = (function () {
         e.preventDefault()
         GameController.players[0].name = player1Input.value
         GameController.players[1].name = player2Input.value
-        GameController.isFormSubmitted = true
+        if (GameController.players[0].name === "" && GameController.players[1].name === "") {
+            GameController.isFormSubmitted = true
+            GameController.players[0].name = "Player One"
+            GameController.players[1].name = "Player Two"
+        } else if (GameController.players[0].name === "") {
+            GameController.players[0].name = "Player One"
+            GameController.players[1].name = player2Input.value
+            GameController.isFormSubmitted = true
+        } else if (GameController.players[1].name === "") {
+            GameController.players[1].name = "Player Two"
+            GameController.players[0].name = player1Input.value
+            GameController.isFormSubmitted = true
+        } else {
+            GameController.players[0].name = player1Input.value
+            GameController.players[1].name = player2Input.value
+            GameController.isFormSubmitted = true
+        }
     })
 
 })()
