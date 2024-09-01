@@ -82,7 +82,8 @@ const GameController = (function () {
                             DisplayController.displayOutput("DRAW!")
                         } else {
                             switchPlayerTurn()
-    
+                            DisplayController.displayPlayerTurnOutput(`It's ${activePlayer.name}'s Turn`)
+                            DisplayController.playerTurnOutput.setAttribute("style", ` background: ${activePlayer.color}`)
                         }
                 } else {
                     DisplayController.displayOutput(`${activePlayer.name} Won!`)
@@ -179,6 +180,11 @@ const DisplayController = (function () {
 
     const outputText = document.querySelector(".outputText")
     const resetBtn = document.querySelector(".resetBtn")
+    const playerTurnOutput = document.querySelector(".playerTurn")
+
+    const displayPlayerTurnOutput = (message) => {
+        playerTurnOutput.textContent = message
+    }
 
     resetBtn.addEventListener("click", () => {
         location.reload()
@@ -194,7 +200,6 @@ const DisplayController = (function () {
     const player2ColorBtn = document.querySelector("#player2ColorBtn")
     const player1ColorInput = document.querySelector("#player1ColorInput")
     const player2ColorInput = document.querySelector("#player2ColorInput")
-    const startBtn = document.querySelector(".startBtn")
 
     player1ColorInput.addEventListener("change", () => {
         player1ColorBtn.setAttribute("style", `background: ${player1ColorInput.value}`)
@@ -209,7 +214,7 @@ const DisplayController = (function () {
         GameController.players[1].color = player2ColorInput.value
     }
 
-    return {displayOutput, setPlayerColor}
+    return {displayOutput, setPlayerColor, displayPlayerTurnOutput, playerTurnOutput}
 })()
 
 
