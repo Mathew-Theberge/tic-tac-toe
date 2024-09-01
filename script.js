@@ -202,5 +202,20 @@ const DisplayController = (function () {
     return {displayOutput}
 })()
 
+
+const formControls = (function () {
+
+    const form = document.querySelector("#form")
+    const plauer1Input = document.querySelector("#player1Input")
+    const plauer2Input = document.querySelector("#player2Input")
+
+    form.addEventListener("submit", (e) => {
+        e.preventDefault()
+        GameController.players[0].name = player1Input.value
+        GameController.players[1].name = player2Input.value
+    })
+
+})()
+
 // GameController.dropToken(GameController.activePlayer)
 

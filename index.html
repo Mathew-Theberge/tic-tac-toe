@@ -16,15 +16,15 @@
             <form action="" id="form">
                 <div>
                     <label for="player1">Player 1</label>
-                    <input type="text" name="player1" id="player1">
+                    <input type="text" name="player1" id="player1Input" minlength="2" maxlength="20" placeholder="Player One" required>
                 </div>
                 <div class="colorSelectorContainer">
                     <button class="selectColor" id="player1ColorBtn">select color</button>
                     <input type="color" class="colorInput" value="#ff5500" id="player1ColorInput">
                   </div>
                 <div>
-                    <label for="player2">Player 1</label>
-                    <input type="text" name="player2" id="player2">
+                    <label for="player2">Player 2</label>
+                    <input type="text" name="player2" id="player2Input" minlength="2" maxlength="20" placeholder="Player Two" required>
                 </div>
                 <div class="colorSelectorContainer">
                     <button class="selectColor" id="player2ColorBtn">select color</button>
@@ -36,7 +36,7 @@
         <div class="board"></div>
 
         <div class="sideBtns">
-            <button form="for" class="startBtn">Start</button>
+            <button form="form" class="startBtn">Start</button>
             <button>Reset</button>
         </div>
     </div>
