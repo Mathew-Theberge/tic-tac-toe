@@ -9,13 +9,8 @@ const Gameboard = (function () {
             board[i].push(Cell())
         }
     }
-
-    const printBoard = () => {
-        const boardWithCellValues = board.map((row) => row.map((cell) => cell.getValue()))
-        console.log(boardWithCellValues);
-      };
     
-    return {board, printBoard}
+    return {board}
 
     function Cell() {
         let value = 0;
@@ -73,7 +68,6 @@ const GameController = (function () {
                         DisplayController.displayOutput("DRAW!")
                     } else {
                         switchPlayerTurn()
-                        Gameboard.printBoard()
                     }
             } else {
                 DisplayController.displayOutput(`${activePlayer.name} Won!`)
@@ -134,7 +128,7 @@ const GameController = (function () {
         if(checkRow(diagonal)) {return true}
     }
 
-    return {switchPlayerTurn, dropToken,}
+    return {dropToken, isGameWon}
 })()
 
 const DisplayController = (function () {
@@ -150,9 +144,11 @@ const DisplayController = (function () {
             for (let j = 0; j < Gameboard.board.length; j++) {
                 let cellDisplay = document.createElement("button")
                 cellDisplay.classList.add("cell")
-                cellDisplay.addEventListener("click", GameController.dropToken.bind(null,i, j))
                 cellDisplay.addEventListener("click", () => {
-                    cellDisplay.textContent = Gameboard.board[i][j].getValue()
+                    if (!GameController.isGameWon()) {
+                        GameController.dropToken(i, j)
+                        cellDisplay.textContent = Gameboard.board[i][j].getValue()
+                    }
                 })
                 rowDisplay.append(cellDisplay)
             }
