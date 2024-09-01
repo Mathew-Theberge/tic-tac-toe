@@ -43,6 +43,7 @@ const Gameboard = (function () {
 const GameController = (function () {
     const playerOne = "Player One"
     const playerTwo = "Player Two"
+    let isFormSubmitted = false
 
     const players = [
         {
@@ -72,19 +73,23 @@ const GameController = (function () {
     }
 
     const dropToken = (row, column) => {
-        if (board[row][column].getValue() === 0) {
-            board[row][column].addToken(activePlayer.token)
-            board[row][column].addColor(activePlayer.color)
-                if (!isGameWon()) {
-                    if (isGameDrawn()) {
-                        DisplayController.displayOutput("DRAW!")
-                    } else {
-                        switchPlayerTurn()
-
-                    }
-            } else {
-                DisplayController.displayOutput(`${activePlayer.name} Won!`)
+        if (GameController.isFormSubmitted) {
+            if (board[row][column].getValue() === 0) {
+                board[row][column].addToken(activePlayer.token)
+                board[row][column].addColor(activePlayer.color)
+                    if (!isGameWon()) {
+                        if (isGameDrawn()) {
+                            DisplayController.displayOutput("DRAW!")
+                        } else {
+                            switchPlayerTurn()
+    
+                        }
+                } else {
+                    DisplayController.displayOutput(`${activePlayer.name} Won!`)
+                }
             }
+        } else {
+            console.log("DWD")
         }
     }
 
@@ -141,7 +146,7 @@ const GameController = (function () {
         if(checkRow(diagonal)) {return true}
     }
 
-    return {dropToken, isGameWon, players}
+    return {dropToken, isGameWon, players, isFormSubmitted}
 })()
 
 const DisplayController = (function () {
@@ -159,9 +164,11 @@ const DisplayController = (function () {
                 cellDisplay.classList.add("cell")
                 cellDisplay.addEventListener("click", () => {
                     if (!GameController.isGameWon()) {
-                        GameController.dropToken(i, j)
-                        cellDisplay.textContent = Gameboard.board[i][j].getValue()
-                        cellDisplay.setAttribute("style", `color :${Gameboard.board[i][j].getColor()}`)
+                        if (GameController.isFormSubmitted) {
+                            GameController.dropToken(i, j)
+                            cellDisplay.textContent = Gameboard.board[i][j].getValue()
+                            cellDisplay.setAttribute("style", `color :${Gameboard.board[i][j].getColor()}`)
+                        }
                     }
                 })
                 rowDisplay.append(cellDisplay)
@@ -202,7 +209,9 @@ const DisplayController = (function () {
         GameController.players[1].color = player2ColorInput.value
     }
 
-    startBtn.addEventListener("click", setPlayerColor)
+    startBtn.addEventListener("click", () => {
+        setPlayerColor()
+    })
 
     return {displayOutput}
 })()
@@ -218,9 +227,11 @@ const formControls = (function () {
         e.preventDefault()
         GameController.players[0].name = player1Input.value
         GameController.players[1].name = player2Input.value
+        GameController.isFormSubmitted = true
     })
 
 })()
 
 // GameController.dropToken(GameController.activePlayer)
+
 
