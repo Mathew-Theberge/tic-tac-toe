@@ -158,6 +158,12 @@ form {
     background-color: rgb(255, 255, 37);
 }
 
+.startBtn,
+.resetBtn,
+.playComputer {
+    color: black
+}
+
 #player1ColorBtn {
     color: #ff5500;
 }
