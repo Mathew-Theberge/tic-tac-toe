@@ -9,9 +9,8 @@
 </head>
 <body>
     <h1>Tic Tac Toe</h1>
-
+    <div class="outputText"></div>
     <div class="mainContent">
-        <div class="outputText">decides winner</div>
         <div class="formContainer">
             <form action="" id="form">
                 <div>
@@ -19,7 +18,7 @@
                     <input type="text" name="player1" id="player1Input" minlength="2" maxlength="20" placeholder="Player One">
                 </div>
                 <div class="colorSelectorContainer">
-                    <button class="selectColor" id="player1ColorBtn">select color</button>
+                    <button class="selectColor" id="player1ColorBtn">X</button>
                     <input type="color" class="colorInput" value="#ff5500" id="player1ColorInput">
                   </div>
                 <div>
@@ -27,7 +26,7 @@
                     <input type="text" name="player2" id="player2Input" minlength="2" maxlength="20" placeholder="Player Two">
                 </div>
                 <div class="colorSelectorContainer">
-                    <button class="selectColor" id="player2ColorBtn">select color</button>
+                    <button class="selectColor" id="player2ColorBtn">O</button>
                     <input type="color" class="colorInput" value="#0055ff" id="player2ColorInput">
                   </div>
             </form>
@@ -40,7 +39,6 @@
             <button class="resetBtn">Reset</button>
         </div>
     </div>
-    <div class="playerTurn">players 1 turn</div>
 
 </body>
 </html>

@@ -82,15 +82,14 @@ const GameController = (function () {
                             DisplayController.displayOutput("DRAW!")
                         } else {
                             switchPlayerTurn()
-                            DisplayController.displayPlayerTurnOutput(`It's ${activePlayer.name}'s Turn`)
-                            DisplayController.playerTurnOutput.setAttribute("style", ` background: ${activePlayer.color}`)
+                            DisplayController.displayOutput(`It's ${activePlayer.name}'s Turn`)
+                            DisplayController.outputText.setAttribute("style", ` background: ${activePlayer.color}9c`)
                         }
                 } else {
                     DisplayController.displayOutput(`${activePlayer.name} Won!`)
+                    DisplayController.outputText.setAttribute("style", ` background: ${activePlayer.color}9c; border: 4px black solid`)
                 }
             }
-        } else {
-            console.log("DWD")
         }
     }
 
@@ -180,11 +179,6 @@ const DisplayController = (function () {
 
     const outputText = document.querySelector(".outputText")
     const resetBtn = document.querySelector(".resetBtn")
-    const playerTurnOutput = document.querySelector(".playerTurn")
-
-    const displayPlayerTurnOutput = (message) => {
-        playerTurnOutput.textContent = message
-    }
 
     resetBtn.addEventListener("click", () => {
         location.reload()
@@ -202,11 +196,11 @@ const DisplayController = (function () {
     const player2ColorInput = document.querySelector("#player2ColorInput")
 
     player1ColorInput.addEventListener("change", () => {
-        player1ColorBtn.setAttribute("style", `background: ${player1ColorInput.value}`)
+        player1ColorBtn.setAttribute("style", `color: ${player1ColorInput.value}`)
     })
 
     player2ColorInput.addEventListener("change", () => {
-        player2ColorBtn.setAttribute("style", `background: ${player2ColorInput.value}`)
+        player2ColorBtn.setAttribute("style", `color: ${player2ColorInput.value}`)
     })
 
     const setPlayerColor = () => {
@@ -214,7 +208,7 @@ const DisplayController = (function () {
         GameController.players[1].color = player2ColorInput.value
     }
 
-    return {displayOutput, setPlayerColor, displayPlayerTurnOutput, playerTurnOutput}
+    return {displayOutput, setPlayerColor, outputText}
 })()
 
 

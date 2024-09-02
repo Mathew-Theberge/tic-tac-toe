@@ -8,7 +8,11 @@
 body {
     min-height: 100svh;
     display: grid;
-    place-content: center;
+    grid-template-rows: auto 100px 1fr;
+    place-items: center;
+    gap: 2rem;
+    padding-top: 3rem;
+    background-color: #efefef;
 }
 
 .board {
@@ -16,12 +20,16 @@ body {
     height: 400px;
     display: grid;
     grid-template-rows: 1fr 1fr 1fr;
+    border: 2px solid black;
 }
+
 
 .cell {
     flex: 1;
     font-weight: 900;
-    font-size: 112px;
+    font-size: 108px;
+    border: black solid 2px;
+    background-color: white;
 }
 
 .row {
@@ -29,11 +37,87 @@ body {
     justify-content: space-between;
 }
 
+.mainContent {
+    display: grid;
+    grid-template-columns: 1fr 400px 1fr;
+    place-items: center;
+    gap: 3rem;
+    align-self: start;
+}
+
+.formContainer {
+    justify-self: end;
+}
+
+
+
+.sideBtns {
+    justify-self: start;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+h1,
+.playerTurn,
+.outputText {
+    text-align: center;
+}
+
+
+h1 {
+    border: double black 4px;
+    font-size: 3rem;
+    justify-self: stretch;
+}
+
+.outputText {
+    padding: 1.5rem;
+    font-weight: 900;
+    font-size: 2.5rem;
+    justify-self: stretch;
+}
+
+.sideBtns > button {
+    padding: 12px 36px;
+    font-size: 32px;
+    border-radius: 8px;
+    font-weight: 700;
+    outline: none;
+    border: solid black 4px;
+}
+
+label {
+    display: block;
+    font-weight: 900;
+}
+
+input[type="text"] {
+    padding: 7px;
+    font-size: 1rem;
+    font-weight: 600;
+    margin-top: 2px;
+    margin-bottom: 18.5px;
+    border-radius: 8px;
+    outline: none;
+    border: 1px solid black;
+    background-color: white;
+}
+
+form {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 1rem;
+    align-items: center;
+
+}
+
+/* below is button color and player related stuff */
 .colorSelectorContainer {
     position: relative;
     height: 40px;
-    width: 80px;
-    border-radius: 8px;
+    width: 40px;
+    border-radius: 50%;
   }
   
 .colorInput {
@@ -48,15 +132,27 @@ body {
 .selectColor {
     position: relative;
     height: 40px;
-    width: 80px;
-    border-radius: 8px;
-    border: none;
+    width: 40px;
+    border-radius: 50%;
+    outline: none;
+    border: 2px solid black ;
+    font-size: 2rem;
+    font-weight: 900;
+    background-color: white;
+}
+
+.startBtn {
+    background-color: lightgreen;
+}
+
+.resetBtn {
+    background-color: rgb(252, 56, 56);
 }
 
 #player1ColorBtn {
-    background-color: #ff5500;
+    color: #ff5500;
 }
 
 #player2ColorBtn {
-    background-color: #0055ff;
+    color: #0055ff;
 }
