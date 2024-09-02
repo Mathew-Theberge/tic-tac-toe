@@ -87,7 +87,7 @@ const GameController = (function () {
                         }
                 } else {
                     DisplayController.displayOutput(`${activePlayer.name} Won!`)
-                    DisplayController.outputText.setAttribute("style", ` background: ${activePlayer.color}9c; border: 4px black solid`)
+                    DisplayController.outputText.setAttribute("style", ` background: ${activePlayer.color}9c; border: black solid; border-width: 4px 0`)
                 }
             }
         }
