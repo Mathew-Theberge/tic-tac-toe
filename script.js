@@ -45,6 +45,7 @@ const GameController = (function () {
     const playerTwo = "Player Two"
     let isFormSubmitted = false
     let isPlayingComputer = false
+    let isComputerTurn = false
 
     const players = [
         {
@@ -103,12 +104,14 @@ const GameController = (function () {
                             cellDisplay.textContent = Gameboard.board[computerRow][computerColumn].getValue()
                             cellDisplay.setAttribute("style", `color :${Gameboard.board[computerRow][computerColumn].getColor()}`)
                         }
+                        GameController.isComputerTurn = false
                     } else {
                         playComputerTurn()
                     }
                 }
 
                 if (activePlayer.name === "Computer") {
+                    GameController.isComputerTurn = true
                     setTimeout(playComputerTurn, 400)
                     DisplayController.displayOutput(`It's ${activePlayer.name}'s Turn`)
                     DisplayController.outputText.setAttribute("style", ` background: ${activePlayer.color}9c`)
@@ -123,6 +126,7 @@ const GameController = (function () {
                                     DisplayController.displayOutput(`It's ${activePlayer.name}'s Turn`)
                                     DisplayController.outputText.setAttribute("style", ` background: ${activePlayer.color}9c`)
                                     switchPlayerTurn()
+                                    GameController.isComputerTurn = true
                                     setTimeout(playComputerTurn, 400)
                                     DisplayController.displayOutput(`It's ${activePlayer.name}'s Turn`)
                                     DisplayController.outputText.setAttribute("style", ` background: ${activePlayer.color}9c`)
@@ -208,7 +212,7 @@ const GameController = (function () {
         if(checkRow(diagonal)) {return true}
     }
 
-    return {dropToken, isGameWon, players, isFormSubmitted}
+    return {dropToken, isGameWon, players, isFormSubmitted, isComputerTurn}
 })()
 
 const DisplayController = (function () {
@@ -228,9 +232,11 @@ const DisplayController = (function () {
                     if (!GameController.isGameWon()) {
                         if (GameController.isFormSubmitted) {
                             if (Gameboard.board[i][j].getValue() === 0) {
-                                GameController.dropToken(i, j)
-                                cellDisplay.textContent = Gameboard.board[i][j].getValue()
-                                cellDisplay.setAttribute("style", `color :${Gameboard.board[i][j].getColor()}`)
+                                if (GameController.isComputerTurn === false) {
+                                    GameController.dropToken(i, j)
+                                    cellDisplay.textContent = Gameboard.board[i][j].getValue()
+                                    cellDisplay.setAttribute("style", `color :${Gameboard.board[i][j].getColor()}`)
+                                }
                             }
                         }
                     }
