@@ -109,7 +109,9 @@ const GameController = (function () {
                 }
 
                 if (activePlayer.name === "Computer") {
-                    playComputerTurn()
+                    setTimeout(playComputerTurn, 400)
+                    DisplayController.displayOutput(`It's ${activePlayer.name}'s Turn`)
+                    DisplayController.outputText.setAttribute("style", ` background: ${activePlayer.color}9c`)
                 } else {
                     if (board[row][column].getValue() === 0) {
                         board[row][column].addToken(activePlayer.token)
@@ -121,7 +123,9 @@ const GameController = (function () {
                                     DisplayController.displayOutput(`It's ${activePlayer.name}'s Turn`)
                                     DisplayController.outputText.setAttribute("style", ` background: ${activePlayer.color}9c`)
                                     switchPlayerTurn()
-                                    playComputerTurn()
+                                    setTimeout(playComputerTurn, 400)
+                                    DisplayController.displayOutput(`It's ${activePlayer.name}'s Turn`)
+                                    DisplayController.outputText.setAttribute("style", ` background: ${activePlayer.color}9c`)
                                 }
                         } else {
                             DisplayController.displayOutput(`${activePlayer.name} Won!`)
