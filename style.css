@@ -198,3 +198,21 @@ form {
         bottom: 55%;
     }
 }
+
+/* hover effects */
+
+.startBtn:hover {
+    background-color: rgba(163, 255, 163, 0.616);
+}
+
+.resetBtn:hover {
+    background-color: rgba(252, 56, 56, 0.637);
+}
+
+.playComputer:hover {
+    background-color: rgba(255, 255, 5, 0.575);
+}
+
+.cell:hover {
+    background-color: rgba(226, 226, 226, 0.459);
+}
