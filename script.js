@@ -9,7 +9,6 @@ const Gameboard = (function () {
             board[i].push(Cell())
         }
     }
-    
     return {board}
 
     function Cell() {
@@ -37,6 +36,7 @@ const Gameboard = (function () {
           getColor
         };
       }
+
 })()
 
 
@@ -44,6 +44,7 @@ const GameController = (function () {
     const playerOne = "Player One"
     const playerTwo = "Player Two"
     let isFormSubmitted = false
+    let isPlayingComputer = false
 
     const players = [
         {
@@ -74,20 +75,77 @@ const GameController = (function () {
 
     const dropToken = (row, column) => {
         if (GameController.isFormSubmitted) {
-            if (board[row][column].getValue() === 0) {
-                board[row][column].addToken(activePlayer.token)
-                board[row][column].addColor(activePlayer.color)
-                    if (!isGameWon()) {
-                        if (isGameDrawn()) {
-                            DisplayController.displayOutput("DRAW!")
+            if (GameController.isPlayingComputer) {
+
+                function playComputerTurn () {
+                    let computerRow = Math.floor(Math.random() * 3)
+                    let computerColumn = Math.floor(Math.random() * 3)
+                    if (board[computerRow][computerColumn].getValue() === 0) {
+                        board[computerRow][computerColumn].addToken(activePlayer.token)
+                        board[computerRow][computerColumn].addColor(activePlayer.color)
+                        const cellDisplayValue = computerRow.toString() + computerColumn.toString()
+                        const cellDisplay = document.querySelector(`.cell${cellDisplayValue}`)
+                            if (!isGameWon()) {
+                                if (isGameDrawn()) {
+                                    DisplayController.displayOutput("DRAW!")
+                                    cellDisplay.textContent = Gameboard.board[computerRow][computerColumn].getValue()
+                                    cellDisplay.setAttribute("style", `color :${Gameboard.board[computerRow][computerColumn].getColor()}`)
+                                } else {
+                                    switchPlayerTurn()
+                                    DisplayController.displayOutput(`It's ${activePlayer.name}'s Turn`)
+                                    DisplayController.outputText.setAttribute("style", ` background: ${activePlayer.color}9c`)
+                                    cellDisplay.textContent = Gameboard.board[computerRow][computerColumn].getValue()
+                                    cellDisplay.setAttribute("style", `color :${Gameboard.board[computerRow][computerColumn].getColor()}`)
+                                }
                         } else {
-                            switchPlayerTurn()
-                            DisplayController.displayOutput(`It's ${activePlayer.name}'s Turn`)
-                            DisplayController.outputText.setAttribute("style", ` background: ${activePlayer.color}9c`)
+                            DisplayController.displayOutput(`${activePlayer.name} Won!`)
+                            DisplayController.outputText.setAttribute("style", ` background: ${activePlayer.color}9c; border: black solid; border-width: 4px 0`)
+                            cellDisplay.textContent = Gameboard.board[computerRow][computerColumn].getValue()
+                            cellDisplay.setAttribute("style", `color :${Gameboard.board[computerRow][computerColumn].getColor()}`)
                         }
+                    } else {
+                        playComputerTurn()
+                    }
+                }
+
+                if (activePlayer.name === "Computer") {
+                    playComputerTurn()
                 } else {
-                    DisplayController.displayOutput(`${activePlayer.name} Won!`)
-                    DisplayController.outputText.setAttribute("style", ` background: ${activePlayer.color}9c; border: black solid; border-width: 4px 0`)
+                    if (board[row][column].getValue() === 0) {
+                        board[row][column].addToken(activePlayer.token)
+                        board[row][column].addColor(activePlayer.color)
+                            if (!isGameWon()) {
+                                if (isGameDrawn()) {
+                                    DisplayController.displayOutput("DRAW!")
+                                } else {
+                                    DisplayController.displayOutput(`It's ${activePlayer.name}'s Turn`)
+                                    DisplayController.outputText.setAttribute("style", ` background: ${activePlayer.color}9c`)
+                                    switchPlayerTurn()
+                                    playComputerTurn()
+                                }
+                        } else {
+                            DisplayController.displayOutput(`${activePlayer.name} Won!`)
+                            DisplayController.outputText.setAttribute("style", ` background: ${activePlayer.color}9c; border: black solid; border-width: 4px 0`)
+                        }
+                    }
+                }
+
+            } else {
+                if (board[row][column].getValue() === 0) {
+                    board[row][column].addToken(activePlayer.token)
+                    board[row][column].addColor(activePlayer.color)
+                        if (!isGameWon()) {
+                            if (isGameDrawn()) {
+                                DisplayController.displayOutput("DRAW!")
+                            } else {
+                                switchPlayerTurn()
+                                DisplayController.displayOutput(`It's ${activePlayer.name}'s Turn`)
+                                DisplayController.outputText.setAttribute("style", ` background: ${activePlayer.color}9c`)
+                            }
+                    } else {
+                        DisplayController.displayOutput(`${activePlayer.name} Won!`)
+                        DisplayController.outputText.setAttribute("style", ` background: ${activePlayer.color}9c; border: black solid; border-width: 4px 0`)
+                    }
                 }
             }
         }
@@ -161,13 +219,15 @@ const DisplayController = (function () {
             let row = Gameboard.board[i]
             for (let j = 0; j < Gameboard.board.length; j++) {
                 let cellDisplay = document.createElement("button")
-                cellDisplay.classList.add("cell")
+                cellDisplay.classList.add("cell", `cell${i}${j}`)
                 cellDisplay.addEventListener("click", () => {
                     if (!GameController.isGameWon()) {
                         if (GameController.isFormSubmitted) {
-                            GameController.dropToken(i, j)
-                            cellDisplay.textContent = Gameboard.board[i][j].getValue()
-                            cellDisplay.setAttribute("style", `color :${Gameboard.board[i][j].getColor()}`)
+                            if (Gameboard.board[i][j].getValue() === 0) {
+                                GameController.dropToken(i, j)
+                                cellDisplay.textContent = Gameboard.board[i][j].getValue()
+                                cellDisplay.setAttribute("style", `color :${Gameboard.board[i][j].getColor()}`)
+                            }
                         }
                     }
                 })
@@ -242,6 +302,58 @@ const formControls = (function () {
             GameController.players[1].name = player2Input.value
         }
     })
+
+})()
+
+const PlayComputer = (function () {
+
+    const PlayComputerBtn = document.querySelector(".playComputer")
+    const startBtn = document.querySelector(".startBtn")
+    const inputList = document.querySelectorAll("input")
+    const computerTurn = Math.floor(Math.random() * 2)
+
+
+    const getComputerTurn = () => {
+        if (computerTurn === 0) {
+            if (GameController.players[0].name !== "") {
+                GameController.players[1].name = player1Input.value
+                GameController.players[0].name = "Computer"
+            } else {
+                GameController.players[0].name = "Computer"
+                GameController.players[1].name = "Player Two"
+            }
+        } else {
+                GameController.players[1].name = "Computer"
+            if (GameController.players[0].name === "") {
+                GameController.players[0].name = "Player One"
+            }
+        }
+    }
+
+    const getComputerChoice = () => {
+        let computerRow = Math.floor(Math.random() * 3)
+        let computerColumn = Math.floor(Math.random() * 3)
+
+        return {computerRow, computerColumn}
+    }
+
+    PlayComputerBtn.addEventListener("click", () => {
+        GameController.isPlayingComputer = true
+        startBtn.removeAttribute("form")
+        GameController.players[0].name = player1Input.value
+        GameController.players[1].name = player2Input.value
+        getComputerTurn()
+        GameController.isFormSubmitted = true
+        DisplayController.setPlayerColor()
+        inputList.forEach( (input) => {
+            input.setAttribute("disabled", "")
+        })
+        if (computerTurn === 0) {
+            GameController.dropToken(null, null)
+        }
+    })
+
+    return {computerTurn, getComputerChoice}
 
 })()
 
